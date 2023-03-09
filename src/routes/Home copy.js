@@ -1,34 +1,26 @@
 import axios from 'axios';
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import Movie from '../components/Movie';
 import '../styles/Home.css';
 
 
 
-function Home(){
+export class Home extends Component {
 
 
-// state = {<-클래스형 컴포넌트에서만 사용가능
-//   isLoading : true, 
-//   movies : [],
-// }
+state = {
+  isLoading : true,
+  movies : [],
+}
 
-const [isLoading, setIsLoading]  = useState(true);
-const [movies, setMovies] = useState([]);
+componentDidMount(){
+  // setTimeout(()=>{
+  //   this.setState({isLoading:false});
+  // },6000);
+  this.getMovies();
+}
 
-
-// componentDidMount(){ <-클래스형 컴포넌트에서만 사용가능
-//   // setTimeout(()=>{
-//   //   this.setState({isLoading:false});
-//   // },6000);
-//   this.getMovies();
-// }
-
-useEffect(() => {
-  getMovies();
-}, []);
-
-const getMovies = async() => {
+getMovies = async() => {
   const {
     data : {
       data : {
@@ -38,15 +30,13 @@ const getMovies = async() => {
   }=
   await axios.get('https://yts.mx/api/v2/list_movies.json?genre=animation&sort_by=like_count');
   console.log(movies);
-  // this.setState({ <-클래스형 컴포넌트에서만 사용가능
-  //   isLoading : false,
-  //   movies// movies : movies,
-  // })
-  setIsLoading(false);
-  setMovies(movies);
+  this.setState({
+    isLoading : false,
+    movies// movies : movies,
+  })
 }
-
-// const {isLoading,movies} = this.state;//구조 분해 할당
+  render() {
+    const {isLoading,movies} = this.state;//구조 분해 할당
     return (      
         <section className='container'>
           {isLoading?
@@ -71,6 +61,6 @@ const getMovies = async() => {
         </section>      
     )
   }
-
+}
 
 export default Home;
